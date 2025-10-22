@@ -1,11 +1,14 @@
-const express = require
+const express = require('express');
 const {
-    retrievaltrips
+    retrievaltrips,
+    createTrip
 } = require('../controller/tripcontroller.js');
 
 const triprouter = express.Router();
 
 triprouter
 .route ('/')
-.get(retrievaltrips);
+.get(retrievaltrips)
+.post( createTrip);
+
 module.exports = triprouter; 

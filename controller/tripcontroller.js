@@ -8,3 +8,31 @@ const retrievalltrips=(req,res)=>{
         data:alltrips,
     });
 }
+
+const createTrip=(req,res)=>{
+const {destinationName,
+destination,
+duration,
+language,
+description,
+accommodation,
+currency,}=req.body;
+
+const newTrip={
+    id :trips.length +1,
+    destination,
+    duration,
+    language,
+    description,
+    accommodation,
+    currency,
+
+}
+
+trips.push(newTrip); 
+
+}
+module.exports={
+    retrievalltrips,
+    createTrip
+};
