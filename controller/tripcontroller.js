@@ -1,11 +1,15 @@
 const {trips}=require('../models/tripmodel');
+const db_access = require('../db.js');
 
 const retrievalltrips=(req,res)=>{
-    const alltrips=trips;
-    res.status(200).json({
-        message:'Trips retrieved successfully',
-        trips:alltrips.length,
-        data:alltrips,
+    const query = `SELECT * FROM trips`
+
+    db.all(query, (err, rows) => {
+        if (err) {
+            console.error('Error retrieving trips:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        res.status(200).json(rows);
     });
 }
 
@@ -18,20 +22,26 @@ description,
 accommodation,
 currency,}=req.body;
 
-const newTrip={
-    id :trips.length +1,
-    destination,
-    duration,
-    language,
-    description,
-    accommodation,
-    currency,
+if (!destinationName || !destination || !duration || !language || !description || !accommodation || !currency) {
+    return res.status(400).json({ error: 'All fields are required' });
+}
+
+query = `INSERT INTO trips (DESTINATION, DURATION, PRICE, LANGUAGE, DESCRIPTION, FLIGHTCOST, ACCOMMODATION, ACCOMMODATIONCOST, MEALCOST, TRANSPORTATIONCOST, ACTIVITIESCOST, CURRENCY)
+VALUES ('${destinationName}', ${duration}, 0, '${language}', '${description}', 0, '${accommodation}', 0, 0, 0, 0, '${currency}')`;
+
+db.run(query, function(err) {
+    if (err) {
+        console.error('Error creating trip:', err.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.status(201).json({ message: 'Trip created successfully', tripId: this.lastID });
+});
 
 }
 
-trips.push(newTrip); 
 
-}
+
+
 module.exports={
     retrievalltrips,
     createTrip
