@@ -1,6 +1,8 @@
 const {trips}=require('../models/tripmodel');
 const db_access = require('../db.js');
 
+
+
 const retrievalltrips=(req,res)=>{
     const query = `SELECT * FROM trips`
 
@@ -11,23 +13,29 @@ const retrievalltrips=(req,res)=>{
         }
         res.status(200).json(rows);
     });
-}
+};
 
 const createTrip=(req,res)=>{
-const {destinationName,
+const {
 destination,
 duration,
+price,
 language,
 description,
+flightcost,
 accommodation,
-currency,}=req.body;
+accommodationcost,
+mealcost,
+transportationcost,
+activitiescost,
+currency}=req.body;
 
-if (!destinationName || !destination || !duration || !language || !description || !accommodation || !currency) {
+if (!destination || !duration || !price || !language || !description || !flightcost || !accommodation || !accommodationcost || !mealcost || !transportationcost || !activitiescost || !currency) {
     return res.status(400).json({ error: 'All fields are required' });
 }
 
 query = `INSERT INTO trips (DESTINATION, DURATION, PRICE, LANGUAGE, DESCRIPTION, FLIGHTCOST, ACCOMMODATION, ACCOMMODATIONCOST, MEALCOST, TRANSPORTATIONCOST, ACTIVITIESCOST, CURRENCY)
-VALUES ('${destinationName}', ${duration}, 0, '${language}', '${description}', 0, '${accommodation}', 0, 0, 0, 0, '${currency}')`;
+VALUES ('${destination}', ${duration}, ${price}, '${language}', '${description}', ${flightcost}, '${accommodation}', ${accommodationcost}, ${mealcost}, ${transportationcost}, ${activitiescost}, '${currency}')`;
 
 db.run(query, function(err) {
     if (err) {
