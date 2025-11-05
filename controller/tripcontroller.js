@@ -14,7 +14,7 @@ const retrievalltrips=(req,res)=>{
         res.status(200).json(rows);
     });
 };
-
+//post
 const createTrip=(req,res)=>{
 const {
 destination,

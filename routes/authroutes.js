@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, compareUser } = require('../controller/authcontroller.js');
+const { signup, login } = require('../controller/authcontroller.js');
 
 const authrouter = express.Router();
 
@@ -9,6 +9,6 @@ authrouter
 
 authrouter
 .route('/login')
-.post(compareUser);
+.post(login);
 
 module.exports = authrouter;
