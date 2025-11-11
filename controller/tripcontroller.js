@@ -34,10 +34,11 @@ if (!destination || !duration || !price || !language || !description || !flightc
     return res.status(400).json({ error: 'All fields are required' });
 }
 
-query = `INSERT INTO trips (DESTINATION, DURATION, PRICE, LANGUAGE, DESCRIPTION, FLIGHTCOST, ACCOMMODATION, ACCOMMODATIONCOST, MEALCOST, TRANSPORTATIONCOST, ACTIVITIESCOST, CURRENCY)
-VALUES ('${destination}', ${duration}, ${price}, '${language}', '${description}', ${flightcost}, '${accommodation}', ${accommodationcost}, ${mealcost}, ${transportationcost}, ${activitiescost}, '${currency}')`;
+const query = `INSERT INTO trips (DESTINATION, DURATION, PRICE, LANGUAGE, DESCRIPTION, FLIGHTCOST, ACCOMMODATION, ACCOMMODATIONCOST, MEALCOST, TRANSPORTATIONCOST, ACTIVITIESCOST, CURRENCY)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+const params = [destination, duration, price, language, description, flightcost, accommodation, accommodationcost, mealcost, transportationcost, activitiescost, currency];
 
-db.run(query, function(err) {
+db.run(query, params, function(err){
     if (err) {
         console.error('Error creating trip:', err.message);
         return res.status(500).json({ error: 'Internal Server Error' });

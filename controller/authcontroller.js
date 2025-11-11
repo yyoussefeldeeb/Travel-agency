@@ -22,9 +22,8 @@ const signup = (req, res) => {
 			return res.status(500).json({ error: 'hashing error' });
 		}
 
-		const query = `INSERT INTO users (NAME, EMAIL, PASSWORD, ROLE) VALUES ('${name}', '${email}', '${hashedPassword}', '${role}')`;
-
-		db.run(query, (err) => {
+		const query = `INSERT INTO users (NAME, EMAIL, PASSWORD, ROLE) VALUES (?,?,?,?)`;
+		db.run(query, [name, email, hashedPassword, role], (err) => {
 			if (err) {
 				console.error(err.message);
 				if (err.message.includes('UNIQUE constraint ')) {
@@ -46,8 +45,8 @@ const login = (req, res) => {
 		return res.status(400).json({ error: 'Email and password are required' });
 	}
 
-	const query = `SELECT password FROM users WHERE email = '${email}'`;
-	db.get(query, (err, row) => {
+	const query = `SELECT id, role, password FROM users WHERE email = ?`;
+	db.get(query, [email], (err, row) => {
 		if (err) {
 			console.error('Error retrieving user:', err.message);
 			return res.status(500).json({ error: 'Database Error' });
